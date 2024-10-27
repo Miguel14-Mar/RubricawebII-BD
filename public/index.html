@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Socket.IO</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Prueba Socket.IO</h1>
+    <input id="mensaje" type="text" placeholder="Escribe un mensaje" />
+    <button id="enviar">Enviar</button>
+    <ul id="mensajes"></ul>
+
+    <script>
+        const socket = io('http://localhost:5000');
+
+        socket.on('connect', () => {
+            console.log('Conectado al servidor WebSocket');
+        });
+
+        socket.on('mensaje', (msg) => {
+            const li = document.createElement('li');
+            li.textContent = msg;
+            document.getElementById('mensajes').appendChild(li);
+        });
+
+        document.getElementById('enviar').onclick = () => {
+            const mensaje = document.getElementById('mensaje').value;
+            socket.emit('mensaje', mensaje);
+            document.getElementById('mensaje').value = '';
+        };
+    </script>
+</body>
+</html>
